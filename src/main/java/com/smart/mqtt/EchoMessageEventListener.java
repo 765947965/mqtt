@@ -15,6 +15,20 @@ import org.slf4j.LoggerFactory;
 public class EchoMessageEventListener extends DefaultMqttMessageEventListener {
     private static final Logger logger = LoggerFactory.getLogger(EchoMessageEventListener.class);
 
+
+    @Override
+    public void connect(WrappedChannel channel, MqttConnectMessage msg) {
+        super.connect(channel, msg);
+        // 做登录验证判断 user password clientId
+        MqttConnectVariableHeader header = msg.variableHeader();
+        // 如果不符合 直接关闭连接
+//        channel.close();
+        // 查询数据库clientId对应的deviceSn
+
+        // 返回给用户deviceSn 以及配置信息
+
+    }
+
     @Override
     public void publish(WrappedChannel channel, MqttPublishMessage msg) {
         String topic = msg.variableHeader().topicName();

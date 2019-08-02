@@ -32,14 +32,9 @@ public class EchoMessageEventListener extends DefaultMqttMessageEventListener {
     @Override
     public void publish(WrappedChannel channel, MqttPublishMessage msg) {
         String topic = msg.variableHeader().topicName();
-        ByteBuf buf = null;
-        try {
-            buf = msg.content().duplicate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         String content = null;
-        if (buf != null) {
+        if (msg.payload() != null && msg.payload().refCnt() > 0) {
+            ByteBuf buf = msg.content().duplicate();
             byte[] tmp = new byte[buf.readableBytes()];
             buf.readBytes(tmp);
             content = new String(tmp);
